@@ -1,7 +1,7 @@
 import request from "supertest";
-import app, { prismaClient } from "../src/app";
 import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../src/secrets";
+import app, { prismaClient } from "../app";
+import { JWT_SECRET } from "../secrets";
 
 let token: string;
 let userId: string;
