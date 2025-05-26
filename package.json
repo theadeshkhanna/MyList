@@ -8,6 +8,7 @@
     "start:dev": "npx nodemon",
     "seed": "ts-node --transpile-only ./prisma/seed/seed.ts",
     "test": "jest",
+    "heroku-prebuild": "npm install --include=dev",
     "heroku-postbuild": "tsc"
   },
   "keywords": [],
