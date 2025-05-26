@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx nodemon",
+    "start:prod": "node build/index.js",
+    "start:dev": "npx nodemon",
     "seed": "ts-node --transpile-only ./prisma/seed/seed.ts",
-    "test": "jest"
+    "test": "jest",
+    "heroku-postbuild": "tsc"
   },
   "keywords": [],
   "author": "",
