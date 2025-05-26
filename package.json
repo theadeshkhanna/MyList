@@ -6,9 +6,8 @@
   "scripts": {
     "start:prod": "node build/index.js",
     "start:dev": "npx nodemon",
-    "seed": "ts-node --transpile-only ./prisma/seed/seed.ts",
+    "seed": "node build/seed/seed.js",
     "test": "jest",
-    "heroku-prebuild": "npm install --include=dev",
     "heroku-postbuild": "tsc"
   },
   "keywords": [],
