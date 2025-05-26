@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { prismaClient } from "../../../src/app";
+import { prismaClient } from "../../app";
 
 export const seedWatchHistory = async () => {
   const users = await prismaClient.user.findMany();

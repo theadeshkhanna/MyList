@@ -1,6 +1,6 @@
 import { Genre } from "@prisma/client";
 import { faker } from "@faker-js/faker";
-import { prismaClient } from "../../../src/app";
+import { prismaClient } from "../../app";
 
 export const seedMovies = async () => {
   for (let i = 0; i < 10; i++) {

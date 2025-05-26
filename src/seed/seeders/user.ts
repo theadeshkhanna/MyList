@@ -1,6 +1,5 @@
-import { faker } from "@faker-js/faker";
 import { hashSync } from "bcrypt";
-import { prismaClient } from "../../../src/app";
+import { prismaClient } from "../../app";
 
 export const seedUsers = async () => {
   const users = [];
