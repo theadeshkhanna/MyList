@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Genre {
+  Action @map("action")
+  Comedy @map("comedy")
+  Drama @map("drama")
+  Fantasy @map("fantasy")
+  Horror @map("horror")
+  Romance @map("romance")
+  SciFi @map("scifi")
+
+  @@map("genre")
+}
+
+model User {
+  id           String           @id @default(uuid())
+  username     String
+  password     String
+
+  preference   Preferance?
+  watchHistory WatchHistory[]
+  lists        List[]
+
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("users")
+}
+
+model Preferance {
+  id             String         @id @default(uuid())
+  favoriteGenres Genre[]
+  dislikedGenres Genre[]
+
+  userId         String         @unique
+  user           User           @relation(fields: [userId], references: [id])
+
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  @@map("preferances")
+}
+
+model Episode {
+  id              String        @id @default(uuid())
+  episodeNumber   Int
+  seasonNumber    Int
+  releaseDate     DateTime
+  director        String
+  actors          String[]
+
+  tvShowId        String       
+  tvShow          TVShow       @relation(fields: [tvShowId], references: [id])
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index(tvShowId)
+
+  @@map("episodes")
+}
+
+model TVShow {
+  id             String        @id @default(uuid())
+
+  content        Content       @relation(fields: [contentId], references: [id])
+  contentId      String        @unique
+
+  episodes       Episode[]
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@map("tv_shows")
+}
+
+model Movie {
+  id              String       @id @default(uuid())
+
+  content         Content      @relation(fields: [contentId], references: [id])
+  contentId       String       @unique
+
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@map("movies")
+}
+
+model Content {
+  id             String       @id @default(uuid())
+  title          String
+  description    String
+  genres         Genre[]
+  releaseDate    DateTime
+  director       String
+  actors         String[]
+
+  movie          Movie?
+  tvShow         TVShow?
+  history        WatchHistory[]
+  listItems      ListItem[]
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([releaseDate])
+  @@map("contents")
+}
+
+model WatchHistory {
+  id             String       @id @default(uuid())
+  watchedOn      DateTime
+  rating         Int?
+
+  userId         String       
+  user           User         @relation(fields: [userId], references: [id])
+
+  contentId      String       
+  content        Content      @relation(fields: [contentId], references: [id])
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index(userId)
+  @@index(contentId)
+
+  @@map("watch_histories")
+}
+
+model List {
+  id             String      @id @default(uuid())
+  name           String
+  
+  userId         String      
+  user           User        @relation(fields: [userId], references: [id])
+
+  items          ListItem[]
+
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  @@unique([userId, name])
+
+  @@index(userId)
+
+  @@map("lists")
+}
+
+model ListItem {
+  id             String       @id @default(uuid())
+
+  listId         String       
+  list           List         @relation(fields: [listId], references: [id])
+
+  contentId      String       
+  content        Content      @relation(fields: [contentId], references: [id])
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@unique([listId, contentId])
+
+  @@index(listId)
+  @@index(contentId)
+
+  @@map("list_items")
+}
